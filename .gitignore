@@ -75,3 +75,6 @@ fabric.properties
 
 # Maven
 target/
+
+# Config
+config.json
