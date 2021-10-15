@@ -1,7 +1,10 @@
 package me.loic.bot;
 
 import lombok.Getter;
+import me.loic.bot.commands.CommandManager;
 import me.loic.bot.config.BotConfig;
+import me.loic.bot.listeners.CommandListener;
+import me.loic.bot.listeners.GuildListener;
 import me.loic.bot.utils.log.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -17,6 +20,7 @@ public class Bot {
 
     private JDA bot;
     private final BotConfig config;
+    private final CommandManager commandManager;
 
     private static Bot instance;
 
@@ -34,6 +38,7 @@ public class Bot {
 
         instance = this;
         config = new BotConfig(verbose.get());
+        commandManager = new CommandManager();
 
         if (config.TOKEN.equalsIgnoreCase("")) {
             Logger.error("Bot token is not set, please define it in the config (" + Constants.CONFIG_PATH + ")");
@@ -48,6 +53,9 @@ public class Bot {
             Logger.error(exception.getMessage());
             Logger.verboseStackTrace(exception);
         }
+
+        bot.addEventListener(new GuildListener());
+        bot.addEventListener(new CommandListener());
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdown));
 

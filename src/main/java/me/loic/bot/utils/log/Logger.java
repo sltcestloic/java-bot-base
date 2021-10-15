@@ -18,10 +18,6 @@ public class Logger {
         log(message, LogType.INFO);
     }
 
-    /**
-     * Affiche un log d'erreur
-     * @param message Le message à afficher
-     */
     public static void error(String message)
     {
         log(message, LogType.ERROR);
